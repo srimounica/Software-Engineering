@@ -1,8 +1,11 @@
 package org.schabi.newpipe.extractor.services.youtube;
 
-import android.app.Fragment;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 
@@ -25,6 +28,7 @@ import org.schabi.newpipe.extractor.StreamUrlIdHandler;
 import org.schabi.newpipe.extractor.StreamExtractor;
 import org.schabi.newpipe.extractor.MediaFormat;
 import org.schabi.newpipe.extractor.VideoStream;
+import org.schabi.newpipe.player.PlayVideoActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +37,8 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.content.Intent.getIntent;
 
 /**
  * Created by Christian Schabesberger on 06.08.15.
@@ -55,6 +61,18 @@ import java.util.regex.Pattern;
  */
 
 public class YoutubeStreamExtractor extends StreamExtractor {
+
+
+    /*public class sharedPref extends Activity {
+
+        public String getData(){
+
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            String userName = sharedPref.getString("userName", "Not Available");
+            return userName;
+        }
+
+    }*/
 
     // exceptions
 
@@ -194,9 +212,6 @@ public class YoutubeStreamExtractor extends StreamExtractor {
         //most common videoInfo fields are now set in our superclass, for all services
         downloader = dl;
         this.pageUrl = pageUrl;
-
-
-        Log.d("initial", pageUrl);
 
         String pageContent = downloader.download(urlidhandler.cleanUrl(pageUrl));
         doc = Jsoup.parse(pageContent, pageUrl);
@@ -503,7 +518,11 @@ public class YoutubeStreamExtractor extends StreamExtractor {
                 encodedUrlMap = playerArgs.getString("url_encoded_fmt_stream_map");
             }
 
-            ///// Getting 5 URLS
+            /*
+            My Changes - 00344661
+            Used already existing method to get Related Videos and retrieved webpage_url value and added to arrayList.
+            Then passed that list to method geturls.
+             */
             int i;
             String tempUrl = "";
             ArrayList<String> listOfUrls = new ArrayList<String>();
@@ -850,8 +869,14 @@ public class YoutubeStreamExtractor extends StreamExtractor {
         return "";
     }
 
+    /*
+        My Changes - 00344661.
+
+        In this method generated StreamUrls from WebPageUrls.(Used already existing code to get stream urls)
+        Returned all streamurls with delimeter ',' .
+     */
     @Override
-    public String geturls (ArrayList<String> urls) throws ParsingException, IOException, JSONException {
+    public  String geturls (ArrayList<String> urls) throws ParsingException, IOException, JSONException {
 
         JSONObject ytPlayerConfig;
         String playerUrl;

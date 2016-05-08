@@ -154,10 +154,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             for(String url : splittedUrls) {
                 Log.d("Temp", listofurls);
             }
-            Log.d("SIZE", String.valueOf(splittedUrls.size()));
-
-
-
             ///////////////////////////////
 
         } catch (Exception e) {
@@ -173,7 +169,9 @@ public class PlayVideoActivity extends AppCompatActivity {
                     videoView.start();
                     showUi();
 
-                    // Enhancement:
+                    /* My Changes 00344661
+                        Added OnCompletionListener and overrided onCompletion method to play next queued video.
+                     */
                     videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                         @Override

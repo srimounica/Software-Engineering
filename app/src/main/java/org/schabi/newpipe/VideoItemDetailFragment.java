@@ -43,8 +43,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import org.json.JSONException;
 import org.schabi.newpipe.download.DownloadDialog;
 import org.schabi.newpipe.extractor.AudioStream;
+import org.schabi.newpipe.extractor.ExtractionException;
 import org.schabi.newpipe.extractor.MediaFormat;
 import org.schabi.newpipe.extractor.ParsingException;
 import org.schabi.newpipe.extractor.ServiceList;
@@ -698,8 +700,6 @@ public class VideoItemDetailFragment extends Fragment {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor prefEditor = sp.edit();
-
-
         Integer i = 0;
         List<StreamPreviewInfo> li = info.related_videos;
 
@@ -707,8 +707,8 @@ public class VideoItemDetailFragment extends Fragment {
             prefEditor.putString(i.toString(), similar.get(i).webpage_url);
             i++;
         }
-
         prefEditor.commit();
+
 
         /////////////////////////
 
@@ -883,21 +883,6 @@ public class VideoItemDetailFragment extends Fragment {
 
     public void playVideo(final StreamInfo info) {
 
-/*        //////TEST
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor prefEditor = sp.edit();
-
-
-        Integer i = 0;
-        List<VideoStream> li = info.video_streams;
-
-        for(VideoStream v : li) {
-            //prefEditor.putString(i.toString(), v.url);
-            i++;
-        }
-        prefEditor.commit();
-        //////TEST*/
-
 
         // ----------- THE MAGIC MOMENT ---------------
         VideoStream selectedVideoStream =
@@ -966,7 +951,10 @@ public class VideoItemDetailFragment extends Fragment {
 
             } else {
 
-                ////////////////////
+                /*
+                My Changes 00344661
+                Added formated stream urls to shared Preference and used that value in PlayVideoActivity class.
+                 */
 
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor prefEditor = sp.edit();
@@ -974,7 +962,6 @@ public class VideoItemDetailFragment extends Fragment {
                 prefEditor.commit();
 
 
-                /////////////////////
 
                 // Internal Player
                 Log.d("URLS in PLAY function", selectedVideoStream.urls);
